@@ -96,15 +96,12 @@ router.post('/', upload.single('image'), async (req, res,next) => {
 
 router.delete('/:id', async (req, res,next) => {
     try {
-        const items = await db.getConnection().execute('DELETE FROM items WHERE id = ?', [req.params.id]);
+        await db.getConnection().execute('DELETE FROM items WHERE id = ?', [req.params.id]);
 
         return  res.send({message: 'deleted this item'});
     } catch (e) {
         next(e);
     }
 });
-
-
-
 
 module.exports = router;

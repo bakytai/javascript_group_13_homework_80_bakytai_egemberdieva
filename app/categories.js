@@ -62,7 +62,7 @@ router.post('/', async (req, res,next) => {
 
 router.delete('/:id', async (req, res,next) => {
     try {
-        const categories = await db.getConnection().execute('DELETE FROM categories WHERE id = ?', [req.params.id]);
+        await db.getConnection().execute('DELETE FROM categories WHERE id = ?', [req.params.id]);
 
         return  res.send({message: 'deleted this category'});
     } catch (e) {

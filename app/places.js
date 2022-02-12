@@ -33,9 +33,36 @@ router.get('/:id', async (req, res,next) => {
     }
 });
 
+router.post('/', async (req, res,next) => {
+    try {
+        if (!req.body.name) {
+            return res.status(400).send({message: 'please write place name'});
+        } else {
+            const place = {
+                name: req.body.name,
+                description: req.body.description,
+            };
+
+            let query = 'INSERT INTO places (name,description) VALUES (?,?)';
+
+            const [results] = await db.getConnection().execute(query, [
+                place.name,
+                place.description,
+            ]);
+
+            const id = results.insertId;
+
+            return  res.send({message: 'Created new place', id});
+        }
+
+    } catch (e) {
+        next(e);
+    }
+});
+
 router.delete('/:id', async (req, res,next) => {
     try {
-        const places = await db.getConnection().execute('DELETE FROM places WHERE id = ?', [req.params.id]);
+        await db.getConnection().execute('DELETE FROM places WHERE id = ?', [req.params.id]);
 
         return  res.send({message: 'deleted this place'});
     } catch (e) {
