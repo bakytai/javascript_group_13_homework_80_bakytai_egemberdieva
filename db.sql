@@ -41,7 +41,7 @@ values  (1, 'furniture', 'some furniture'),
 insert into items (id, name, category_id, place_id, description, image)
 values  (1, 'laptop', 3, 1, 'some words', null),
         (2, 'sofa', 1, 2, 'big sofa', null),
-        (7, 'fridge', 4, 1, 'some desc', 'pIzuBUhN425q_Z0291URm.png');
+        (9, 'fridge', 4, 1, '', '5lD-9FK7QXF9TnAwyLQFI.png');
 
 insert into places (id, name, description)
 values  (1, 'office', 'some office'),
