@@ -5,7 +5,6 @@ const config = require('../config');
 const { nanoid } = require('nanoid');
 const db = require('../mysqlDb');
 
-
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -98,7 +97,6 @@ router.post('/', upload.single('image'), async (req, res,next) => {
 router.delete('/:id', async (req, res,next) => {
     try {
         const [items] = await db.getConnection().execute('DELETE * FROM items WHERE id = ?', [req.params.id]);
-
 
         return  res.send({message: 'deleted this item'});
     } catch (e) {

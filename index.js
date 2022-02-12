@@ -9,6 +9,7 @@ const port = 8000;
 app.use(express.json());
 app.use(express.static('public'));
 app.use('/items', items);
+app.use('/categories', categories);
 
 const run = async () => {
     await db.init();
