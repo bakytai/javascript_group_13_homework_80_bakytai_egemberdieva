@@ -33,5 +33,43 @@ router.get('/:id', async (req, res,next) => {
     }
 });
 
+router.post('/', async (req, res,next) => {
+    try {
+        if (!req.body.name) {
+            return res.status(400).send({message: 'please write category name'});
+        } else {
+            const category = {
+                name: req.body.name,
+                description: req.body.description,
+            };
+
+            let query = 'INSERT INTO categories (name,description) VALUES (?,?)';
+
+            const [results] = await db.getConnection().execute(query, [
+                category.name,
+                category.description,
+            ]);
+
+            const id = results.insertId;
+
+            return  res.send({message: 'Created new category', id});
+        }
+
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.delete('/:id', async (req, res,next) => {
+    try {
+        const categories = await db.getConnection().execute('DELETE FROM categories WHERE id = ?', [req.params.id]);
+
+        return  res.send({message: 'deleted this category'});
+    } catch (e) {
+        next(e);
+        return res.send({message: 'this category has foreign key'})
+    }
+});
+
 module.exports = router;
 

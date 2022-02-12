@@ -33,4 +33,15 @@ router.get('/:id', async (req, res,next) => {
     }
 });
 
+router.delete('/:id', async (req, res,next) => {
+    try {
+        const places = await db.getConnection().execute('DELETE FROM places WHERE id = ?', [req.params.id]);
+
+        return  res.send({message: 'deleted this place'});
+    } catch (e) {
+        next(e);
+        return res.send({message: 'this place has foreign key'})
+    }
+});
+
 module.exports = router;
