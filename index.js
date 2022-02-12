@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/items', items);
 app.use('/categories', categories);
+app.use('/places', places);
 
 const run = async () => {
     await db.init();
