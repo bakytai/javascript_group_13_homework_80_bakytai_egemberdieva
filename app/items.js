@@ -59,8 +59,52 @@ router.get('/:id', async (req, res,next) => {
     }
 });
 
+router.post('/', upload.single('image'), async (req, res,next) => {
+    try {
+        if (!req.body.name || !req.body.categoryId || !req.body.placeId) {
+            return res.status(400).send({message: 'Wrong item'});
+        }
+
+        const item = {
+            name: req.body.name,
+            categoryId: req.body.categoryId,
+            placeId: req.body.placeId,
+            description: req.body.description,
+            image: null,
+        };
+
+        if (req.file) {
+            item.image = req.file.filename;
+        }
+
+        let query = 'INSERT INTO items (name,category_id,place_id,description,image) VALUES (?,?,?,?,?)';
+
+        const [results] = await db.getConnection().execute(query, [
+            item.name,
+            item.categoryId,
+            item.placeId,
+            item.description,
+            item.image
+        ]);
+
+        const id = results.insertId;
+
+        return  res.send({message: 'Created new item', id});
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.delete('/:id', async (req, res,next) => {
+    try {
+        const [items] = await db.getConnection().execute('DELETE * FROM items WHERE id = ?', [req.params.id]);
 
 
+        return  res.send({message: 'deleted this item'});
+    } catch (e) {
+        next(e);
+    }
+});
 
 
 
